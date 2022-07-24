@@ -1,4 +1,4 @@
-import env from '../../../env';
+import env from '../../../core/env';
 
 const authConfig = {
   saltRounds: 12,

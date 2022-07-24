@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import { NextFunction } from 'express';
 import { Document, Schema } from 'mongoose';
-import { db } from '../../db/connection';
+import { db } from '../../core/db/connection';
 import authConfig from '../auth/lib/auth-config';
 
 export interface IUser extends Document {
@@ -12,7 +12,6 @@ export interface IUser extends Document {
     name: string;
     gender: string;
     location: string;
-    website: string;
   };
 
   comparePassword: (password: string) => Promise<boolean>;
