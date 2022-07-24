@@ -1,6 +1,7 @@
 import { check, ValidationChain } from 'express-validator';
 import { Gender } from '../../../core/utils/types';
 import validationBuilder from '../../../core/utils/validation-builder';
+import UserService from '../../user/lib/user.service';
 
 type AuthValKeys = 'signUpRules' | 'loginRules';
 
@@ -15,6 +16,10 @@ const AuthVal: Record<AuthValKeys, ValidationChain[]> = {
     validationBuilder(check('email'), 'Email')
       .required()
       .maxString(255)
+      .custom(
+        async (email: string) => !(await UserService.emailExists(email)),
+        (field) => `${field} already in use`,
+      )
       .build(),
     validationBuilder(check('password'), 'Password')
       .required()

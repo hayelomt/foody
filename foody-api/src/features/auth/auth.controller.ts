@@ -1,14 +1,15 @@
 import { Request, Response } from 'express';
+import catchAsync from '../../core/utils/catch-async';
 import User from '../user/user';
 import UserTokenService from '../user/usertoken/lib/usertoken.service';
 import AuthService from './lib/auth.service';
 
 const AuthController = {
-  signUp: async (req: Request, res: Response) => {
+  signUp: catchAsync(async (req: Request, res: Response) => {
     const result = await AuthService.signUpUser(req.body);
 
     res.json({ data: result });
-  },
+  }),
 
   login: async (req: Request, res: Response) => {
     const { email, password } = req.body;
