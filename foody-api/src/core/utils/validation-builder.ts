@@ -1,3 +1,4 @@
+import { Request } from 'express';
 import { ValidationChain } from 'express-validator';
 
 class ValidationRules {
@@ -139,6 +140,19 @@ class ValidationRules {
 
   object() {
     this.chain.isObject().withMessage(`${this.field} must be an object`);
+
+    return this;
+  }
+
+  file() {
+    this.chain.custom((_: any, { req }: any) => {
+      req = req as Request;
+      if (!req.file) {
+        throw new Error(`${this.field} must be a file`);
+      }
+
+      return true;
+    });
 
     return this;
   }

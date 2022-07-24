@@ -4,6 +4,7 @@ import * as path from 'path';
 import * as swaggerJSDoc from 'swagger-jsdoc';
 import * as swaggerUi from 'swagger-ui-express';
 import authRouter from '../../features/auth/auth.route';
+import restaurantRouter from '../../features/restaurant/restaurant.route';
 import handleError from '../error/handleError';
 
 const swaggerDef = require('../../../swaggerDef');
@@ -20,6 +21,8 @@ export function init(app: express.Application): void {
    * @constructs
    */
   app.use('/v1/auth', authRouter);
+
+  app.use('/v1/restaurants', restaurantRouter);
 
   /**
    * @description
