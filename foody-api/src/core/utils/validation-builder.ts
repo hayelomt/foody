@@ -143,6 +143,30 @@ class ValidationRules {
     return this;
   }
 
+  /**
+   *
+   * Custom rule validation that is per module dependent
+   * Eg. unique email validation during signUp
+   *
+   * @param assertCb : Callback functions that accepts fieldValue and req, to perform logic and return boolean value based on the custom logic
+   * @param msgBuilder : Callback that accepts field value and builds custom message format
+   * @returns
+   */
+  custom(
+    assertCb: (fieldValue: any, req?: any) => boolean | Promise<boolean>,
+    msgBuilder: (field: string, req?: any) => string,
+  ) {
+    this.chain.custom(async (fieldValue: any, { req }: any) => {
+      if (!(await assertCb(fieldValue, req))) {
+        throw new Error(msgBuilder(this.field, req));
+      }
+
+      return true;
+    });
+
+    return this;
+  }
+
   // dateAfterOrEqual(dateField: string) {
   //   this.chain.custom((val, ctx: any) => {
   //     const compDate = ctx?.req?.body?.[dateField];
