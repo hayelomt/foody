@@ -19,11 +19,6 @@ Middleware.configure(app);
 Routes.init(app);
 
 /**
- * @constructs express.Application Error Handler
- */
-Middleware.initErrorHandler(app);
-
-/**
  * sets port 3000 to default or unless otherwise specified in the environment
  */
 app.set('port', config.port || 3000);
@@ -31,7 +26,7 @@ app.set('port', config.port || 3000);
 /**
  * sets secret to 'superSecret', otherwise specified in the environment
  */
-app.set('secret', config.secret || 'superSecret');
+app.set('secret', config.auth.JWT_SECRET || 'superSecret');
 
 /**
  * @exports {express.Application}

@@ -6,27 +6,30 @@ import * as http from 'http';
  * @extends {Error}
  */
 export class HttpError extends Error {
-    status: number;
+  status: number;
 
-    message: string;
+  message: string;
 
-    name: 'HttpError';
+  error: Record<string, any>;
 
-    /**
-     * Creates an instance of HttpError.
-     * @param {number} [status]
-     * @param {string} [message]
-     * @memberof HttpError
-     */
-    constructor(status ? : number, message ? : string) {
-        super(message);
+  name: 'HttpError';
 
-        Error.captureStackTrace(this, this.constructor);
+  /**
+   * Creates an instance of HttpError.
+   * @param {number} [status]
+   * @param {string} [message]
+   * @memberof HttpError
+   */
+  constructor(status?: number, message?: string, error?: Record<string, any>) {
+    super(message);
 
-        this.status = status || 500;
-        this.name = this.name || 'HttpError';
-        this.message = message || http.STATUS_CODES[this.status] || 'Error';
-    }
+    Error.captureStackTrace(this, this.constructor);
+
+    this.status = status || 500;
+    this.name = this.name || 'HttpError';
+    this.message = message || http.STATUS_CODES[this.status] || 'Error';
+    this.error = error;
+  }
 }
 
 export default HttpError;
