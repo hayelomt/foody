@@ -8,7 +8,12 @@ interface IConfig {
     MONGODB_URI: string;
     MONGODB_DB_MAIN: string;
   };
-  secret: string;
+  auth: {
+    JWT_SECRET: string;
+    JWT_EXPIRE_MINUTES: number;
+    REFRESH_SECRET: string;
+    REFRESH_EXPIRE_DAYS: number;
+  };
 }
 
 const NODE_ENV: string = process.env.NODE_ENV || 'development';
@@ -19,7 +24,12 @@ const development: IConfig = {
     MONGODB_URI: process.env.MONGODB_URI || 'mongodb://localhost:27017/',
     MONGODB_DB_MAIN: process.env.MONGODB_DB_MAIN || 'users_db',
   },
-  secret: process.env.SECRET || '@QEGTUI',
+  auth: {
+    JWT_SECRET: process.env.JWT_SECRET || '@QEGTUI',
+    JWT_EXPIRE_MINUTES: parseInt(process.env.JWT_EXPIRE_MINUTES, 10) || 10,
+    REFRESH_SECRET: process.env.REFRESH_SECRET || '@QEGTUI',
+    REFRESH_EXPIRE_DAYS: parseInt(process.env.REFRESH_EXPIRE_DAYS, 10) || 20,
+  },
 };
 
 const production: IConfig = {
@@ -28,7 +38,12 @@ const production: IConfig = {
     MONGODB_URI: process.env.MONGODB_URI || 'mongodb://production_uri/',
     MONGODB_DB_MAIN: process.env.MONGODB_DB_MAIN || 'users_db',
   },
-  secret: process.env.SECRET || '@QEGTUI',
+  auth: {
+    JWT_SECRET: process.env.JWT_SECRET || '@QEGTUI',
+    JWT_EXPIRE_MINUTES: parseInt(process.env.JWT_EXPIRE_MINUTES, 10) || 10,
+    REFRESH_SECRET: process.env.REFRESH_SECRET || '@QEGTUI',
+    REFRESH_EXPIRE_DAYS: parseInt(process.env.REFRESH_EXPIRE_DAYS, 10) || 20,
+  },
 };
 
 const test: IConfig = {
@@ -37,7 +52,12 @@ const test: IConfig = {
     MONGODB_URI: process.env.MONGODB_URI || 'mongodb://localhost:27017',
     MONGODB_DB_MAIN: 'test_users_db',
   },
-  secret: process.env.SECRET || '@QEGTUI',
+  auth: {
+    JWT_SECRET: process.env.JWT_SECRET || '@QEGTUI',
+    JWT_EXPIRE_MINUTES: parseInt(process.env.JWT_EXPIRE_MINUTES, 10) || 10,
+    REFRESH_SECRET: process.env.REFRESH_SECRET || '@QEGTUI',
+    REFRESH_EXPIRE_DAYS: parseInt(process.env.REFRESH_EXPIRE_DAYS, 10) || 20,
+  },
 };
 
 const config: {

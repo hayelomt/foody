@@ -1,4 +1,4 @@
-import UserToken from '../src/core/fetures/user/usertoken/usertoken';
+import UserToken from '../src/core/features/user/usertoken/usertoken';
 
 const mongoUnit = require('mongo-unit');
 
@@ -8,13 +8,13 @@ const clearDb = async () => {
 };
 
 before(async () => {
-  console.log('before globalizer');
+  // console.log('before globalizer');
   await mongoUnit.start();
   process.env.MONGODB_URI = mongoUnit.getUrl();
 });
 
 beforeEach(async () => {
-  console.log('before each');
+  // console.log('before each');
   await clearDb();
 });
 
