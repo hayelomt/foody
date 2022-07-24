@@ -27,7 +27,7 @@ const AuthController = {
     });
   }),
 
-  refresh: async (req: Request, res: Response) => {
+  refresh: catchAsync(async (req: Request, res: Response) => {
     const { refreshToken: requestRefreshToken } = req.params;
     const userId = await UserTokenService.verifyRefreshToken(
       requestRefreshToken,
@@ -40,7 +40,8 @@ const AuthController = {
       accessToken,
       refreshToken,
     });
-  },
+  }),
+
   test: async (req: Request, res: Response) => {
     res.json({ data: (req as any).user });
   },
