@@ -1,5 +1,5 @@
 import * as jwt from 'jsonwebtoken';
-import HttpError from '../../../../error';
+import HttpError from '../../../../core/error';
 import authConfig from '../../../auth/lib/auth-config';
 import UserToken from '../usertoken';
 

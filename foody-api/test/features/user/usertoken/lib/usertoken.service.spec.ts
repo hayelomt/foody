@@ -3,10 +3,10 @@ import * as jwt from 'jsonwebtoken';
 import * as sinon from 'sinon';
 import { userFactory } from '../../../../../src/core/db/factory/user.factory';
 import HttpError from '../../../../../src/core/error';
-import authConfig from '../../../../../src/core/features/auth/lib/auth-config';
-import User from '../../../../../src/core/features/user/user';
-import UserTokenService from '../../../../../src/core/features/user/usertoken/lib/usertoken.service';
-import UserToken from '../../../../../src/core/features/user/usertoken/usertoken';
+import authConfig from '../../../../../src/features/auth/lib/auth-config';
+import User from '../../../../../src/features/user/user';
+import UserTokenService from '../../../../../src/features/user/usertoken/lib/usertoken.service';
+import UserToken from '../../../../../src/features/user/usertoken/usertoken';
 import { assertError } from '../../../../testUtils';
 
 const sandbox = sinon.createSandbox();

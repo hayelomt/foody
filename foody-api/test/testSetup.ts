@@ -1,4 +1,4 @@
-import UserToken from '../src/core/features/user/usertoken/usertoken';
+import UserToken from '../src/features/user/usertoken/usertoken';
 
 const mongoUnit = require('mongo-unit');
 

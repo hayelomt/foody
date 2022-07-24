@@ -15,6 +15,7 @@ const AuthVal: Record<AuthValKeys, ValidationChain[]> = {
       .build(),
     validationBuilder(check('email'), 'Email')
       .required()
+      .email()
       .maxString(255)
       .custom(
         async (email: string) => !(await UserService.emailExists(email)),
@@ -36,7 +37,10 @@ const AuthVal: Record<AuthValKeys, ValidationChain[]> = {
       .enum(Object.values(Gender))
       .build(),
   ],
-  loginRules: [],
+  loginRules: [
+    validationBuilder(check('email'), 'Email').required().build(),
+    validationBuilder(check('password'), 'Password').required().build(),
+  ],
 };
 
 export default AuthVal;

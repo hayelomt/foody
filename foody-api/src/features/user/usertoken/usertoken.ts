@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { db } from '../../../db/connection';
+import { db } from '../../../core/db/connection';
 
 export interface IUserToken extends Document {
   userId: string;

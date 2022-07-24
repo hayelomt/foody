@@ -11,18 +11,8 @@ const AuthController = {
     res.json({ data: result });
   }),
 
-  login: async (req: Request, res: Response) => {
-    const { email, password } = req.body;
-
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ msg: 'invalid user' });
-    }
-
-    const valid = await user.comparePassword(password);
-    if (!valid) {
-      return res.status(401).json({ msg: 'invalid pass' });
-    }
+  login: catchAsync(async (req: Request, res: Response) => {
+    const user = await AuthService.login(req.body);
 
     const { accessToken, refreshToken } =
       await UserTokenService.generateAuthTokens(user._id);
@@ -30,12 +20,12 @@ const AuthController = {
     res.json({
       data: {
         email: user.email,
-        name: user.email,
+        name: user.profile.name,
         accessToken,
         refreshToken,
       },
     });
-  },
+  }),
 
   refresh: async (req: Request, res: Response) => {
     const { refreshToken: requestRefreshToken } = req.params;

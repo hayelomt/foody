@@ -10,6 +10,11 @@ type SignUpDto = {
   };
 };
 
+type LoginDto = {
+  email: string;
+  password: string;
+};
+
 const AuthDto = {
   signUpDto: (data: any): SignUpDto => ({
     email: data.email,
@@ -19,6 +24,10 @@ const AuthDto = {
       gender: data.gender,
       location: data.location,
     },
+  }),
+  loginDto: (data: any): LoginDto => ({
+    email: data.email,
+    password: data.password,
   }),
 };
 
