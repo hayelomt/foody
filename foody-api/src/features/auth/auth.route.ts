@@ -8,7 +8,7 @@ const authRouter = Router();
 
 authRouter.post(
   '/user/sign-up',
-  validate(AuthVal.signUpRules),
+  validate(AuthVal.signUpUserRules),
   AuthController.signUpUser,
 );
 
@@ -19,6 +19,23 @@ authRouter.post(
 );
 
 authRouter.post('/user/refresh/:refreshToken', AuthController.refresh('user'));
+
+authRouter.post(
+  '/manager/sign-up',
+  validate(AuthVal.signUpManagerRules),
+  AuthController.signUpManager,
+);
+
+authRouter.post(
+  '/manager/login',
+  validate(AuthVal.loginRules),
+  AuthController.loginManager,
+);
+
+authRouter.post(
+  '/manager/refresh/:refreshToken',
+  AuthController.refresh('manager'),
+);
 
 authRouter.get('/test', isAuthenticated, AuthController.test);
 

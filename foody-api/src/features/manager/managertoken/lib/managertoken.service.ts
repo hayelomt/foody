@@ -1,11 +1,11 @@
 import * as jwt from 'jsonwebtoken';
 import HttpError from '../../../../core/error';
 import authConfig from '../../../auth/lib/auth-config';
-import UserToken from '../usertoken';
+import ManagerToken from '../managertoken';
 
-const UserTokenService = {
-  generateAuthTokens: async (userId: string) => {
-    const payload = { _id: userId };
+const ManagerTokenService = {
+  generateAuthTokens: async (managerId: string) => {
+    const payload = { _id: managerId };
     const accessToken = jwt.sign(payload, authConfig.jwtSecret, {
       expiresIn: authConfig.jwtExpiresIn,
     });
@@ -13,20 +13,21 @@ const UserTokenService = {
       expiresIn: authConfig.refreshExpiresIn,
     });
 
-    const userToken = await UserToken.findOne({ userId: payload._id });
+    const managerToken = await ManagerToken.findOne({ managerId: payload._id });
 
-    if (userToken) {
-      await userToken.remove();
+    // TODO: 1. Refactor for multi token support
+    if (managerToken) {
+      await managerToken.remove();
     }
 
-    await UserToken.create({ userId: payload._id, token: refreshToken });
+    await ManagerToken.create({ managerId: payload._id, token: refreshToken });
 
     return { accessToken, refreshToken };
   },
 
   verifyRefreshToken: async (refreshToken: string) => {
-    const userToken = await UserToken.findOne({ token: refreshToken });
-    if (!userToken) {
+    const managerToken = await ManagerToken.findOne({ token: refreshToken });
+    if (!managerToken) {
       throw new HttpError(401, 'Invalid refresh token');
     }
 
@@ -43,4 +44,4 @@ const UserTokenService = {
   },
 };
 
-export default UserTokenService;
+export default ManagerTokenService;

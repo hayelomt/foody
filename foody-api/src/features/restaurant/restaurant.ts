@@ -29,6 +29,6 @@ const RestaurantSchema = new Schema({
   },
 });
 
-const Restaurant = db.model<IRestaurant>('Restaurant', RestaurantSchema);
+const Restaurant = db.model<IRestaurant>('restaurant', RestaurantSchema);
 
 export default Restaurant;

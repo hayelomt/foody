@@ -1,12 +1,20 @@
 import HttpError from '../../../core/error';
+import ManagerService from '../../manager/lib/manager.service';
 import UserService from '../../user/lib/user.service';
 import Authenticable, { IAuthUser } from '../contracts/authenticable';
 import AuthDto from './auth.dto';
 
 const AuthService = {
   signUpUser: async (data: any): Promise<boolean> => {
-    const userData = AuthDto.signUpDto(data);
+    const userData = AuthDto.signUpUserDto(data);
     await UserService.createUser(userData);
+
+    return true;
+  },
+
+  signUpManager: async (data: any) => {
+    const managerData = AuthDto.signUpManagerDto(data);
+    await ManagerService.createManager(managerData);
 
     return true;
   },

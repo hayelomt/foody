@@ -1,14 +1,14 @@
 import { Schema } from 'mongoose';
 import { db } from '../../../core/db/connection';
 
-export interface IUserToken extends Document {
-  userId: string;
+export interface IManagerToken extends Document {
+  managerId: string;
   token: string;
   createdAt: string;
 }
 
-const userTokenSchema = new Schema({
-  userId: {
+const managerTokenSchema = new Schema({
+  managerId: {
     type: Schema.Types.ObjectId,
     required: true,
   },
@@ -23,6 +23,9 @@ const userTokenSchema = new Schema({
   },
 });
 
-const UserToken = db.model<IUserToken>('usertoken', userTokenSchema);
+const ManagerToken = db.model<IManagerToken>(
+  'managertoken',
+  managerTokenSchema,
+);
 
-export default UserToken;
+export default ManagerToken;

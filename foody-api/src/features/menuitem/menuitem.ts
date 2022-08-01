@@ -41,9 +41,9 @@ const MenuItemSchema = new Schema({
   tags: [String],
   prepTime: Number,
   available: { type: Boolean, required: true },
-  restaurantId: { type: Types.ObjectId, ref: 'Restaurant' },
+  restaurantId: { type: Types.ObjectId, ref: 'restaurant' },
 });
 
-const MenuItem = db.model('MenuItem', MenuItemSchema);
+const MenuItem = db.model('menuitem', MenuItemSchema);
 
 export default MenuItem;

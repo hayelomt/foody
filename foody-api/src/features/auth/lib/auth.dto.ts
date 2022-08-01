@@ -1,11 +1,19 @@
 import { Gender } from '../../../core/utils/types';
 
-type SignUpDto = {
+type SignUpUserDto = {
   email: string;
   password: string;
   profile: {
     gender: Gender;
     location: string;
+    name: string;
+  };
+};
+
+export type SignUpManagerDto = {
+  email: string;
+  password: string;
+  profile: {
     name: string;
   };
 };
@@ -16,7 +24,7 @@ type LoginDto = {
 };
 
 const AuthDto = {
-  signUpDto: (data: any): SignUpDto => ({
+  signUpUserDto: (data: any): SignUpUserDto => ({
     email: data.email,
     password: data.password,
     profile: {
@@ -25,6 +33,15 @@ const AuthDto = {
       location: data.location,
     },
   }),
+
+  signUpManagerDto: (data: any): SignUpManagerDto => ({
+    email: data.email,
+    password: data.password,
+    profile: {
+      name: data.name,
+    },
+  }),
+
   loginDto: (data: any): LoginDto => ({
     email: data.email,
     password: data.password,

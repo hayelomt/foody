@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import catchAsync from '../../core/utils/catch-async';
+import ManagerService from '../manager/lib/manager.service';
+import ManagerTokenService from '../manager/managertoken/lib/managertoken.service';
 import UserService from '../user/lib/user.service';
 import UserTokenService from '../user/usertoken/lib/usertoken.service';
 import Tokenable from './contracts/tokenable';
@@ -8,6 +10,7 @@ import AuthService from './lib/auth.service';
 
 const tokenableMap: Record<UserTypes, Tokenable> = {
   user: UserTokenService,
+  manager: ManagerTokenService,
 };
 
 const AuthController = {
@@ -27,6 +30,28 @@ const AuthController = {
       data: {
         email: user.email,
         name: user.profile.name,
+        accessToken,
+        refreshToken,
+      },
+    });
+  }),
+
+  signUpManager: catchAsync(async (req: Request, res: Response) => {
+    const result = await AuthService.signUpManager(req.body);
+
+    res.json({ data: result });
+  }),
+
+  loginManager: catchAsync(async (req: Request, res: Response) => {
+    const manager = await AuthService.login(ManagerService, req.body);
+
+    const { accessToken, refreshToken } =
+      await tokenableMap.manager.generateAuthTokens(manager._id);
+
+    res.json({
+      data: {
+        email: manager.email,
+        name: manager.profile.name,
         accessToken,
         refreshToken,
       },

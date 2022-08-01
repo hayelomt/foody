@@ -4,14 +4,12 @@ import { Document, Schema } from 'mongoose';
 import { db } from '../../core/db/connection';
 import authConfig from '../auth/lib/auth-config';
 
-export interface IUser extends Document {
+export interface IManager extends Document {
   email: string;
   password: string;
 
   profile: {
     name: string;
-    gender: string;
-    location: string;
   };
 
   comparePassword: (password: string) => Promise<boolean>;
@@ -19,12 +17,9 @@ export interface IUser extends Document {
 
 const ProfileSchema = new Schema({
   name: String,
-  gender: String,
-  location: String,
-  website: String,
 });
 
-const UserSchema = new Schema({
+const ManagerSchema = new Schema({
   email: {
     type: String,
     required: true,
@@ -39,25 +34,25 @@ const UserSchema = new Schema({
   profile: ProfileSchema,
 });
 
-UserSchema.pre('save', async function (next: NextFunction): Promise<void> {
-  const user: IUser = this;
+ManagerSchema.pre('save', async function (next: NextFunction): Promise<void> {
+  const manager: IManager = this;
 
-  if (!user.isModified('password')) {
+  if (!manager.isModified('password')) {
     next();
   }
 
   try {
     const salt: string = await bcrypt.genSalt(authConfig.saltRounds);
-    const hash: string = await bcrypt.hash(user.password, salt);
+    const hash: string = await bcrypt.hash(manager.password, salt);
 
-    user.password = hash;
+    manager.password = hash;
     next();
   } catch (err) {
     return next(err);
   }
 });
 
-UserSchema.methods.comparePassword = async function (
+ManagerSchema.methods.comparePassword = async function (
   candidatePassword: string,
 ): Promise<boolean> {
   try {
@@ -67,6 +62,6 @@ UserSchema.methods.comparePassword = async function (
   }
 };
 
-const User = db.model<IUser>('user', UserSchema);
+const Manager = db.model<IManager>('manager', ManagerSchema);
 
-export default User;
+export default Manager;
