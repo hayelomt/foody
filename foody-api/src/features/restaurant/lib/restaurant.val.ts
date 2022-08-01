@@ -24,6 +24,17 @@ const RestaurantVal: Record<RestaurantValKeys, ValidationChain[]> = {
       .required()
       .number()
       .build(),
+    validationBuilder(check('deliveryRate'), 'Deliver Rate')
+      .required()
+      .number()
+      .numberGte(0)
+      .build(),
+    validationBuilder(check('image'), 'Image')
+      .custom(
+        (_: any, req) => !!req.file,
+        (field: string) => `${field} is required`,
+      )
+      .build(),
   ],
 };
 

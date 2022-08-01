@@ -2,13 +2,13 @@ import Findable from '../../../core/contracts/findable';
 import Restaurant, { IRestaurant } from '../restaurant';
 import RestaurantDto from './restaurant.dto';
 
-const RestaurantService: Findable & Record<string, any> = {
+const RestaurantService = {
   async findOne(id: string) {
     return Restaurant.findOne({ _id: id });
   },
 
-  createRestaurant: async (data: any): Promise<IRestaurant> => {
-    const createData = RestaurantDto.createRestaurantDto(data);
+  createRestaurant: async (data: any, userId: string): Promise<IRestaurant> => {
+    const createData = RestaurantDto.createRestaurantDto(data, userId);
 
     return Restaurant.create(createData);
   },

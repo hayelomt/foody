@@ -1,4 +1,4 @@
-import { Document, Schema } from 'mongoose';
+import { Document, Schema, Types } from 'mongoose';
 import { db } from '../../core/db/connection';
 
 export interface IRestaurant extends Document {
@@ -11,6 +11,8 @@ export interface IRestaurant extends Document {
     size: number;
     path: string;
   };
+  managerId: string;
+  deliveryRate: number;
 }
 
 const RestaurantSchema = new Schema({
@@ -27,6 +29,8 @@ const RestaurantSchema = new Schema({
     size: Number,
     path: String,
   },
+  managerId: { type: Types.ObjectId, ref: 'manager' },
+  deliveryRate: { type: Number, required: true },
 });
 
 const Restaurant = db.model<IRestaurant>('restaurant', RestaurantSchema);
