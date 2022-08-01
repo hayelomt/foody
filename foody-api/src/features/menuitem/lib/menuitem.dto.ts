@@ -11,7 +11,7 @@ type CreateMenuItemDto = {
   type: string;
   category: string;
   tags: string[];
-  prepTime: number;
+  cookTime: number;
   available: boolean;
   restaurantId: string;
 };
@@ -25,7 +25,7 @@ const MenuItemDto = {
     type: data.type,
     category: data.category,
     tags: data.tags || [],
-    prepTime: data.prepTime,
+    cookTime: data.cookTime,
     available: data.available === 'true' ? true : false,
     restaurantId: data.restaurantId,
   }),

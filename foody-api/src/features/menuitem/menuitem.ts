@@ -18,7 +18,7 @@ export interface IMenuItem extends Document {
   type: MenuItemType;
   category: string;
   tags: string[];
-  prepTime: number;
+  cookTime: number;
   available: boolean;
   restaurantId: string;
 }
@@ -40,7 +40,7 @@ const MenuItemSchema = new Schema({
   type: { type: String, required: true },
   category: { type: String },
   tags: [String],
-  prepTime: Number,
+  cookTime: Number,
   available: { type: Boolean, required: true },
   restaurantId: { type: Types.ObjectId, ref: appConstants.models.restaurant },
 });

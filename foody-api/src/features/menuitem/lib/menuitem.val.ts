@@ -46,7 +46,7 @@ const MenuItemVal: Record<MenuItemKeys, ValidationChain[]> = {
       .minString(1)
       .maxString(15)
       .build(),
-    validationBuilder(check('prepTime'), 'Prep time')
+    validationBuilder(check('cookTime'), 'Prep time')
       .optional()
       .number()
       .build(),
