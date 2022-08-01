@@ -1,5 +1,7 @@
 import { Request } from 'express';
 import { ValidationChain } from 'express-validator';
+import { Types } from 'mongoose';
+import Findable from '../contracts/findable';
 
 class ValidationRules {
   constructor(protected chain: ValidationChain, protected field: string) {}
@@ -181,17 +183,38 @@ class ValidationRules {
     return this;
   }
 
-  // dateAfterOrEqual(dateField: string) {
-  //   this.chain.custom((val, ctx: any) => {
-  //     const compDate = ctx?.req?.body?.[dateField];
-  //     if (dateField && compDate && moment(compDate).isAfter(moment(val))) {
-  //       throw new Error(`${this.field} can't be before ${dateField}`);
-  //     }
+  validMongooseId() {
+    this.chain.custom(async (id: string) => {
+      if (
+        !id ||
+        !Types.ObjectId.isValid(id) ||
+        !new Types.ObjectId(id).toString()
+      ) {
+        throw new Error(`${this.field} is not a valid id`);
+      }
 
-  //     return true;
-  //   });
-  //   return this;
-  // }
+      return true;
+    });
+
+    return this;
+  }
+
+  /**
+   *
+   * @param findable a service class that implements findable to find an item based on id
+   * @returns
+   */
+  exists(findable: Findable) {
+    this.chain.custom(async (fieldValue: string) => {
+      if (!(await findable.findOne(fieldValue))) {
+        throw new Error(`${this.field} does not exist`);
+      }
+
+      return true;
+    });
+
+    return this;
+  }
 
   build() {
     return this.chain;
