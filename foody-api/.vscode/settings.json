@@ -1,3 +1,11 @@
 {
-  "cSpell.words": ["Authenticable", "managertoken", "Tokenable", "usertoken"]
+  "cSpell.words": [
+    "appconstants",
+    "Authenticable",
+    "catchasync",
+    "fileupload",
+    "managertoken",
+    "Tokenable",
+    "usertoken"
+  ]
 }

@@ -2,6 +2,7 @@ import * as bcrypt from 'bcrypt';
 import { NextFunction } from 'express';
 import { Document, Schema } from 'mongoose';
 import { db } from '../../core/db/connection';
+import appConstants from '../../core/utils/appconstants';
 import authConfig from '../auth/lib/auth-config';
 
 export interface IManager extends Document {
@@ -62,6 +63,6 @@ ManagerSchema.methods.comparePassword = async function (
   }
 };
 
-const Manager = db.model<IManager>('manager', ManagerSchema);
+const Manager = db.model<IManager>(appConstants.models.manager, ManagerSchema);
 
 export default Manager;

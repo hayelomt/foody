@@ -1,5 +1,6 @@
 import { Document, Schema, Types } from 'mongoose';
 import { db } from '../../core/db/connection';
+import appConstants from '../../core/utils/appconstants';
 
 export enum MenuItemType {
   Drink = 'drink',
@@ -41,9 +42,9 @@ const MenuItemSchema = new Schema({
   tags: [String],
   prepTime: Number,
   available: { type: Boolean, required: true },
-  restaurantId: { type: Types.ObjectId, ref: 'restaurant' },
+  restaurantId: { type: Types.ObjectId, ref: appConstants.models.restaurant },
 });
 
-const MenuItem = db.model('menuitem', MenuItemSchema);
+const MenuItem = db.model(appConstants.models.menuItem, MenuItemSchema);
 
 export default MenuItem;

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { imageUpload } from '../../core/middleware/file-upload';
+import { imageUpload } from '../../core/middleware/fileupload';
 import validate from '../../core/middleware/validate';
 import { isAuthenticated } from '../auth/lib/auth.middleware';
 import RestaurantVal from './lib/restaurant.val';

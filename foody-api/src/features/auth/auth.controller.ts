@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import catchAsync from '../../core/utils/catch-async';
+import catchAsync from '../../core/utils/catchasync';
 import ManagerService from '../manager/lib/manager.service';
 import UserService from '../user/lib/user.service';
 import AuthProvider from './lib/auth-provider';

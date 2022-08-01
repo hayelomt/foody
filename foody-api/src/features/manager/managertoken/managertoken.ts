@@ -1,5 +1,6 @@
 import { Schema } from 'mongoose';
 import { db } from '../../../core/db/connection';
+import appConstants from '../../../core/utils/appconstants';
 
 export interface IManagerToken extends Document {
   managerId: string;
@@ -11,6 +12,7 @@ const managerTokenSchema = new Schema({
   managerId: {
     type: Schema.Types.ObjectId,
     required: true,
+    ref: appConstants.models.manager,
   },
   token: {
     type: String,
@@ -24,7 +26,7 @@ const managerTokenSchema = new Schema({
 });
 
 const ManagerToken = db.model<IManagerToken>(
-  'managertoken',
+  appConstants.models.managerToken,
   managerTokenSchema,
 );
 

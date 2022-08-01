@@ -2,6 +2,7 @@ import * as bcrypt from 'bcrypt';
 import { NextFunction } from 'express';
 import { Document, Schema } from 'mongoose';
 import { db } from '../../core/db/connection';
+import appConstants from '../../core/utils/appconstants';
 import authConfig from '../auth/lib/auth-config';
 
 export interface IUser extends Document {
@@ -67,6 +68,6 @@ UserSchema.methods.comparePassword = async function (
   }
 };
 
-const User = db.model<IUser>('user', UserSchema);
+const User = db.model<IUser>(appConstants.models.user, UserSchema);
 
 export default User;

@@ -1,4 +1,4 @@
-import catchAsync from '../../core/utils/catch-async';
+import catchAsync from '../../core/utils/catchasync';
 import { RequestWithUser } from '../auth/lib/auth.middleware';
 import RestaurantService from './lib/restaurant.service';
 

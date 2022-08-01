@@ -1,5 +1,6 @@
 import { Schema } from 'mongoose';
 import { db } from '../../../core/db/connection';
+import appConstants from '../../../core/utils/appconstants';
 
 export interface IUserToken extends Document {
   userId: string;
@@ -11,6 +12,7 @@ const userTokenSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
     required: true,
+    ref: appConstants.models.user,
   },
   token: {
     type: String,
@@ -23,6 +25,9 @@ const userTokenSchema = new Schema({
   },
 });
 
-const UserToken = db.model<IUserToken>('usertoken', userTokenSchema);
+const UserToken = db.model<IUserToken>(
+  appConstants.models.userToken,
+  userTokenSchema,
+);
 
 export default UserToken;
