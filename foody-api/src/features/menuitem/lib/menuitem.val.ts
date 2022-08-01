@@ -1,5 +1,6 @@
 import { check, ValidationChain } from 'express-validator';
 import validationBuilder from '../../../core/utils/validation-builder';
+import { RequestWithUser } from '../../auth/lib/auth.middleware';
 import RestaurantService from '../../restaurant/lib/restaurant.service';
 import { MenuItemType } from '../menuitem';
 
@@ -58,6 +59,11 @@ const MenuItemVal: Record<MenuItemKeys, ValidationChain[]> = {
       .string()
       .validMongooseId()
       .exists(RestaurantService)
+      .custom(
+        async (id: string, req: RequestWithUser) =>
+          await RestaurantService.isManager(id, req.user._id!),
+        (_: string) => 'Not a manager of selected restaurant',
+      )
       .build(),
   ],
 };
