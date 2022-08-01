@@ -1,8 +1,11 @@
-import Authenticable from '../../auth/contracts/authenticable';
 import { SignUpManagerDto } from '../../auth/lib/auth.dto';
 import Manager from '../manager';
 
 const ManagerService = {
+  findOne: async (id: string) => {
+    return Manager.findById(id).select('-password');
+  },
+
   findByEmail: async (email: string) => {
     return Manager.findOne({ email });
   },

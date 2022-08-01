@@ -1,6 +1,10 @@
 import User, { IUser } from '../user';
 
 const UserService = {
+  findOne: async (id: string) => {
+    return await User.findById(id).select('-password');
+  },
+
   findByEmail: async (email: string) => {
     return User.findOne({ email });
   },

@@ -37,6 +37,6 @@ authRouter.post(
   AuthController.refresh('manager'),
 );
 
-authRouter.get('/test', isAuthenticated, AuthController.test);
+authRouter.get('/test', isAuthenticated('manager'), AuthController.test);
 
 export default authRouter;
