@@ -1,6 +1,6 @@
 import HttpError from '../../../core/error';
 import UserService from '../../user/lib/user.service';
-import User, { IUser } from '../../user/user';
+import Authenticable, { IAuthUser } from '../contracts/authenticable';
 import AuthDto from './auth.dto';
 
 const AuthService = {
@@ -11,24 +11,27 @@ const AuthService = {
     return true;
   },
 
-  login: async (data: any): Promise<IUser> => {
+  login: async (
+    authenticable: Authenticable,
+    data: any,
+  ): Promise<IAuthUser> => {
     const { email, password } = AuthDto.loginDto(data);
 
-    const user = await User.findOne({ email });
-    if (!user) {
+    const authUser = await authenticable.findByEmail(email);
+    if (!authUser) {
       throw new HttpError(400, 'Authorization error', {
         email: 'Invalid Credential',
       });
     }
 
-    const valid = await user.comparePassword(password);
+    const valid = await authUser.comparePassword(password);
     if (!valid) {
       throw new HttpError(400, 'Authorization error', {
         email: 'Invalid Credential',
       });
     }
 
-    return user;
+    return authUser;
   },
 };
 

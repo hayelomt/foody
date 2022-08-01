@@ -1,21 +1,27 @@
 import { Request, Response } from 'express';
 import catchAsync from '../../core/utils/catch-async';
-import User from '../user/user';
+import UserService from '../user/lib/user.service';
 import UserTokenService from '../user/usertoken/lib/usertoken.service';
+import Tokenable from './contracts/tokenable';
+import { UserTypes } from './lib/auth-type';
 import AuthService from './lib/auth.service';
 
+const tokenableMap: Record<UserTypes, Tokenable> = {
+  user: UserTokenService,
+};
+
 const AuthController = {
-  signUp: catchAsync(async (req: Request, res: Response) => {
+  signUpUser: catchAsync(async (req: Request, res: Response) => {
     const result = await AuthService.signUpUser(req.body);
 
     res.json({ data: result });
   }),
 
-  login: catchAsync(async (req: Request, res: Response) => {
-    const user = await AuthService.login(req.body);
+  loginUser: catchAsync(async (req: Request, res: Response) => {
+    const user = await AuthService.login(UserService, req.body);
 
     const { accessToken, refreshToken } =
-      await UserTokenService.generateAuthTokens(user._id);
+      await tokenableMap.user.generateAuthTokens(user._id);
 
     res.json({
       data: {
@@ -27,20 +33,23 @@ const AuthController = {
     });
   }),
 
-  refresh: catchAsync(async (req: Request, res: Response) => {
-    const { refreshToken: requestRefreshToken } = req.params;
-    const userId = await UserTokenService.verifyRefreshToken(
-      requestRefreshToken,
-    );
+  refresh: (userType: UserTypes) =>
+    catchAsync(async (req: Request, res: Response) => {
+      const { refreshToken: requestRefreshToken } = req.params;
+      const tokenableService = tokenableMap[userType];
 
-    const { accessToken, refreshToken } =
-      await UserTokenService.generateAuthTokens(userId);
+      const userId = await tokenableService.verifyRefreshToken(
+        requestRefreshToken,
+      );
 
-    res.json({
-      accessToken,
-      refreshToken,
-    });
-  }),
+      const { accessToken, refreshToken } =
+        await tokenableService.generateAuthTokens(userId);
+
+      res.json({
+        accessToken,
+        refreshToken,
+      });
+    }),
 
   test: async (req: Request, res: Response) => {
     res.json({ data: (req as any).user });

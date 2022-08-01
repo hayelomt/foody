@@ -7,14 +7,18 @@ import AuthVal from './lib/auth.val';
 const authRouter = Router();
 
 authRouter.post(
-  '/sign-up',
+  '/user/sign-up',
   validate(AuthVal.signUpRules),
-  AuthController.signUp,
+  AuthController.signUpUser,
 );
 
-authRouter.post('/login', validate(AuthVal.loginRules), AuthController.login);
+authRouter.post(
+  '/user/login',
+  validate(AuthVal.loginRules),
+  AuthController.loginUser,
+);
 
-authRouter.post('/refresh/:refreshToken', AuthController.refresh);
+authRouter.post('/user/refresh/:refreshToken', AuthController.refresh('user'));
 
 authRouter.get('/test', isAuthenticated, AuthController.test);
 

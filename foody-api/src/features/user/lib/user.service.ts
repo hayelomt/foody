@@ -1,6 +1,11 @@
+import Authenticable from '../../auth/contracts/authenticable';
 import User, { IUser } from '../user';
 
-const UserService = {
+const UserService: Authenticable & Record<string, any> = {
+  findByEmail: async (email: string) => {
+    return User.findOne({ email });
+  },
+
   createUser: (data: Partial<IUser>) => {
     return User.create(data);
   },
