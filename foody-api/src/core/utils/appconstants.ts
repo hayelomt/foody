@@ -1,5 +1,6 @@
 const appConstants = {
   models: {
+    driver: 'driver',
     manager: 'manager',
     managerToken: 'managertoken',
     menuItem: 'menuitem',

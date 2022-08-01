@@ -1,10 +1,16 @@
-import Findable from '../../../core/contracts/findable';
+import { Types } from 'mongoose';
 import Restaurant, { IRestaurant } from '../restaurant';
 import RestaurantDto from './restaurant.dto';
 
 const RestaurantService = {
-  async findOne(id: string) {
+  findOne: async (id: string) => {
     return Restaurant.findOne({ _id: id });
+  },
+
+  isManager: async (restaurantId: string, userId: Types.ObjectId) => {
+    const restaurant = await RestaurantService.findOne(restaurantId);
+
+    return restaurant.managerId.toString() === userId.toString();
   },
 
   createRestaurant: async (data: any, userId: string): Promise<IRestaurant> => {
