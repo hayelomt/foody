@@ -1,6 +1,6 @@
 import catchAsync from '../../core/utils/catchasync';
-import { RequestWithUser } from '../auth/lib/auth.middleware';
-import RestaurantService from './lib/restaurant.service';
+import { RequestWithUser } from '../auth/_lib/auth.middleware';
+import RestaurantService from './_lib/restaurant.service';
 
 const RestaurantController = {
   createRestaurant: catchAsync(async (req: RequestWithUser, res) => {

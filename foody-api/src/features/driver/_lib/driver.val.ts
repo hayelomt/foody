@@ -1,7 +1,7 @@
 import { check, ValidationChain } from 'express-validator';
 import validationBuilder from '../../../core/utils/validation-builder';
-import { RequestWithUser } from '../../auth/lib/auth.middleware';
-import RestaurantService from '../../restaurant/lib/restaurant.service';
+import { RequestWithUser } from '../../auth/_lib/auth.middleware';
+import RestaurantService from '../../restaurant/_lib/restaurant.service';
 import DriverService from './driver.service';
 
 type ManagerKeys = 'createDriverRules';

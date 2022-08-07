@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import catchAsync from '../../core/utils/catchasync';
-import ManagerService from '../manager/lib/manager.service';
-import UserService from '../user/lib/user.service';
-import AuthProvider from './lib/auth-provider';
-import { UserTypes } from './lib/auth-type';
-import { RequestWithUser } from './lib/auth.middleware';
-import AuthService from './lib/auth.service';
+import ManagerService from '../manager/_lib/manager.service';
+import UserService from '../user/_lib/user.service';
+import AuthProvider from './_lib/auth-provider';
+import { UserTypes } from './_lib/auth-type';
+import { RequestWithUser } from './_lib/auth.middleware';
+import AuthService from './_lib/auth.service';
 
 const AuthController = {
   signUpUser: catchAsync(async (req: Request, res: Response) => {

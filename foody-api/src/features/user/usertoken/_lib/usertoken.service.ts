@@ -1,6 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 import HttpError from '../../../../core/error';
-import authConfig from '../../../auth/lib/auth-config';
+import authConfig from '../../../auth/_lib/auth-config';
 import UserToken from '../usertoken';
 
 const UserTokenService = {

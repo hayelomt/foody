@@ -1,4 +1,3 @@
-import faker from 'faker';
 import Driver, { IDriver } from '../../../features/driver/driver';
 import Manager, { IManager } from '../../../features/manager/manager';
 import MenuItem, {
@@ -68,6 +67,10 @@ const fakeData: FakeDataProps = {
       type: MenuItemType.Food,
       category: 'junk',
       tags: ['burger', 'fast food', 'special', 'meat'],
+      image: {
+        size: 1000,
+        path: 'uploads/imgs/basic-burger.jpg',
+      },
       cookTime: 25,
       available: true,
       ingredients: [
@@ -82,6 +85,10 @@ const fakeData: FakeDataProps = {
       type: MenuItemType.Food,
       category: 'meat',
       tags: ['burrito', 'fast food', 'meat'],
+      image: {
+        size: 1000,
+        path: 'uploads/imgs/burrito.jpg',
+      },
       cookTime: 30,
       available: true,
       ingredients: [
@@ -96,6 +103,10 @@ const fakeData: FakeDataProps = {
       type: MenuItemType.Food,
       category: 'junk',
       tags: ['burger', 'cheese', 'fast food', 'meat'],
+      image: {
+        size: 1000,
+        path: 'uploads/imgs/cheese-burger.jpg',
+      },
       cookTime: 20,
       available: true,
       ingredients: [
@@ -111,6 +122,10 @@ const fakeData: FakeDataProps = {
       type: MenuItemType.Food,
       category: 'meat',
       tags: ['taco', 'fast food', 'meat'],
+      image: {
+        size: 1000,
+        path: 'uploads/imgs/tacos.jpg',
+      },
       cookTime: 30,
       available: true,
       ingredients: [
@@ -126,6 +141,10 @@ const fakeData: FakeDataProps = {
       type: MenuItemType.Food,
       category: 'junk',
       tags: ['burger', 'double', 'fast food', 'meat'],
+      image: {
+        size: 1000,
+        path: 'uploads/imgs/double.jpg',
+      },
       cookTime: 20,
       available: true,
       ingredients: [

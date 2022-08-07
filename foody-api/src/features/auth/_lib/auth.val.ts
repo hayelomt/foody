@@ -1,8 +1,8 @@
 import { check, ValidationChain } from 'express-validator';
 import { Gender } from '../../../core/utils/types';
 import validationBuilder from '../../../core/utils/validation-builder';
-import ManagerService from '../../manager/lib/manager.service';
-import UserService from '../../user/lib/user.service';
+import ManagerService from '../../manager/_lib/manager.service';
+import UserService from '../../user/_lib/user.service';
 
 type AuthValKeys = 'signUpUserRules' | 'signUpManagerRules' | 'loginRules';
 

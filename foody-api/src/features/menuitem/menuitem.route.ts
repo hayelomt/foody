@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { imageUpload } from '../../core/middleware/fileupload';
 import validate from '../../core/middleware/validate';
-import { isAuthenticated } from '../auth/lib/auth.middleware';
-import MenuItemVal from './lib/menuitem.val';
+import { isAuthenticated } from '../auth/_lib/auth.middleware';
+import MenuItemVal from './_lib/menuitem.val';
 import MenuItemController from './menuitem.controller';
 
 const menuItemRouter = Router();

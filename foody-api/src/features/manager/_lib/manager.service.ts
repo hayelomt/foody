@@ -1,4 +1,4 @@
-import { SignUpManagerDto } from '../../auth/lib/auth.dto';
+import { SignUpManagerDto } from '../../auth/_lib/auth.dto';
 import Manager from '../manager';
 
 const ManagerService = {

@@ -3,7 +3,7 @@ import { NextFunction } from 'express';
 import { Document, Schema, Types } from 'mongoose';
 import { db } from '../../core/db/connection';
 import appConstants from '../../core/utils/appconstants';
-import authConfig from '../auth/lib/auth-config';
+import authConfig from '../auth/_lib/auth-config';
 
 export interface IDriver extends Document {
   email: string;

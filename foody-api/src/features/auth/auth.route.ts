@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import validate from '../../core/middleware/validate';
 import AuthController from './auth.controller';
-import { isAuthenticated } from './lib/auth.middleware';
-import AuthVal from './lib/auth.val';
+import { isAuthenticated } from './_lib/auth.middleware';
+import AuthVal from './_lib/auth.val';
 
 const authRouter = Router();
 

@@ -1,6 +1,6 @@
 import HttpError from '../../../core/error';
-import ManagerService from '../../manager/lib/manager.service';
-import UserService from '../../user/lib/user.service';
+import ManagerService from '../../manager/_lib/manager.service';
+import UserService from '../../user/_lib/user.service';
 import Authenticable, { IAuthUser } from '../contracts/authenticable';
 import AuthDto from './auth.dto';
 

@@ -1,5 +1,5 @@
 import catchAsync from '../../core/utils/catchasync';
-import MenuItemService from './lib/menuitem.service';
+import MenuItemService from './_lib/menuitem.service';
 
 const MenuItemController = {
   create: catchAsync(async (req, res) => {
