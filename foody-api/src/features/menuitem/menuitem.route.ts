@@ -12,7 +12,9 @@ menuItemRouter.post(
   isAuthenticated('manager'),
   imageUpload.single('image'),
   validate(MenuItemVal.createRules),
-  MenuItemController.create,
+  MenuItemController.store,
 );
+
+menuItemRouter.get('/', MenuItemController.index);
 
 export default menuItemRouter;

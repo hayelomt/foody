@@ -15,23 +15,28 @@ export interface IRestaurant extends Document {
   deliveryRate: number;
 }
 
-const RestaurantSchema = new Schema({
-  name: {
-    type: String,
-    unique: true,
-    required: true,
+const RestaurantSchema = new Schema(
+  {
+    name: {
+      type: String,
+      unique: true,
+      required: true,
+    },
+    location: {
+      latitude: Number,
+      longitude: Number,
+    },
+    image: {
+      size: Number,
+      path: String,
+    },
+    managerId: { type: Types.ObjectId, ref: 'manager' },
+    deliveryRate: { type: Number, required: true },
   },
-  location: {
-    latitude: Number,
-    longitude: Number,
+  {
+    timestamps: true,
   },
-  image: {
-    size: Number,
-    path: String,
-  },
-  managerId: { type: Types.ObjectId, ref: 'manager' },
-  deliveryRate: { type: Number, required: true },
-});
+);
 
 const Restaurant = db.model<IRestaurant>('restaurant', RestaurantSchema);
 

@@ -25,20 +25,25 @@ const ProfileSchema = new Schema({
   website: String,
 });
 
-const UserSchema = new Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-    transform: (val: string) => val.toLowerCase(),
+const UserSchema = new Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      transform: (val: string) => val.toLowerCase(),
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    profile: ProfileSchema,
   },
-  password: {
-    type: String,
-    required: true,
+  {
+    timestamps: true,
   },
-  profile: ProfileSchema,
-});
+);
 
 UserSchema.pre('save', async function (next: NextFunction): Promise<void> {
   const user: IUser = this;

@@ -23,28 +23,36 @@ export interface IMenuItem extends Document {
   restaurantId: string;
 }
 
-const MenuItemSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
+const MenuItemSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    image: {
+      size: Number,
+      path: String,
+    },
+    ingredients: [{ image: String, name: String }],
+    type: { type: String, required: true },
+    category: { type: String },
+    tags: [String],
+    cookTime: Number,
+    available: { type: Boolean, required: true },
+    restaurantId: { type: Types.ObjectId, ref: appConstants.models.restaurant },
   },
-  price: {
-    type: Number,
-    required: true,
+  {
+    timestamps: true,
   },
-  image: {
-    size: Number,
-    path: String,
-  },
-  ingredients: [{ image: String, name: String }],
-  type: { type: String, required: true },
-  category: { type: String },
-  tags: [String],
-  cookTime: Number,
-  available: { type: Boolean, required: true },
-  restaurantId: { type: Types.ObjectId, ref: appConstants.models.restaurant },
-});
+);
 
-const MenuItem = db.model(appConstants.models.menuItem, MenuItemSchema);
+const MenuItem = db.model<IMenuItem>(
+  appConstants.models.menuItem,
+  MenuItemSchema,
+);
 
 export default MenuItem;

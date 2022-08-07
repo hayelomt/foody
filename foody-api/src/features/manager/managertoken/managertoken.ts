@@ -8,22 +8,27 @@ export interface IManagerToken extends Document {
   createdAt: string;
 }
 
-const managerTokenSchema = new Schema({
-  managerId: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: appConstants.models.manager,
+const managerTokenSchema = new Schema(
+  {
+    managerId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: appConstants.models.manager,
+    },
+    token: {
+      type: String,
+      required: true,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      expires: 30 * 24 * 3600,
+    },
   },
-  token: {
-    type: String,
-    required: true,
+  {
+    timestamps: true,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-    expires: 30 * 24 * 3600,
-  },
-});
+);
 
 const ManagerToken = db.model<IManagerToken>(
   appConstants.models.managerToken,

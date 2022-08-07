@@ -21,21 +21,26 @@ const ProfileSchema = new Schema({
   name: String,
 });
 
-const DriverSchema = new Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-    transform: (val: string) => val.toLowerCase(),
+const DriverSchema = new Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      transform: (val: string) => val.toLowerCase(),
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    profile: ProfileSchema,
+    restaurantId: { type: Types.ObjectId, ref: appConstants.models.restaurant },
   },
-  password: {
-    type: String,
-    required: true,
+  {
+    timestamps: true,
   },
-  profile: ProfileSchema,
-  restaurantId: { type: Types.ObjectId, ref: appConstants.models.restaurant },
-});
+);
 
 DriverSchema.pre('save', async function (next: NextFunction): Promise<void> {
   const driver: IDriver = this;
