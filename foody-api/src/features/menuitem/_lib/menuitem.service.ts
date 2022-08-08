@@ -10,9 +10,9 @@ const MenuItemService = {
   },
 
   findAll: () => {
-    return MenuItem.find({ available: true }).populate(
-      appConstants.models.restaurant,
-    );
+    return MenuItem.find({ available: true })
+      .populate(appConstants.models.restaurant)
+      .limit(10);
   },
 };
 

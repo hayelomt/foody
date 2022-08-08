@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import { NextFunction } from 'express';
-import { Document, Schema, Types } from 'mongoose';
+import { Document, Schema } from 'mongoose';
 import { db } from '../../core/db/connection';
 import appConstants from '../../core/utils/appconstants';
 import authConfig from '../auth/_lib/auth-config';
@@ -12,7 +12,7 @@ export interface IDriver extends Document {
   profile: {
     name: string;
   };
-  restaurantId: string;
+  restaurant: string;
 
   comparePassword: (password: string) => Promise<boolean>;
 }
@@ -35,7 +35,10 @@ const DriverSchema = new Schema(
       required: true,
     },
     profile: ProfileSchema,
-    restaurantId: { type: Types.ObjectId, ref: appConstants.models.restaurant },
+    restaurant: {
+      type: Schema.Types.ObjectId,
+      ref: appConstants.models.restaurant,
+    },
   },
   {
     timestamps: true,

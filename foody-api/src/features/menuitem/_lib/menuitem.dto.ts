@@ -13,7 +13,7 @@ type CreateMenuItemDto = {
   tags: string[];
   cookTime: number;
   available: boolean;
-  restaurantId: string;
+  restaurant: string;
 };
 
 const MenuItemDto = {
@@ -27,7 +27,7 @@ const MenuItemDto = {
     tags: data.tags || [],
     cookTime: data.cookTime,
     available: data.available === 'true' ? true : false,
-    restaurantId: data.restaurantId,
+    restaurant: data.restaurantId,
   }),
 };
 

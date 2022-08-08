@@ -10,7 +10,7 @@ type CreateRestaurantDto = {
     size: number;
     path: string;
   };
-  managerId: string;
+  manager: string;
   deliveryRate: number;
 };
 
@@ -25,7 +25,7 @@ const RestaurantDto = {
       path: data.path,
       size: data.size,
     },
-    managerId,
+    manager: managerId,
     deliveryRate: Money.fromBill(data.deliveryRate).amount,
   }),
 };

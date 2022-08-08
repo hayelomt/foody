@@ -1,4 +1,4 @@
-import { Document, Schema, Types } from 'mongoose';
+import { Document, Schema } from 'mongoose';
 import { db } from '../../core/db/connection';
 import appConstants from '../../core/utils/appconstants';
 
@@ -20,7 +20,7 @@ export interface IMenuItem extends Document {
   tags: string[];
   cookTime: number;
   available: boolean;
-  restaurantId: string;
+  restaurant: string;
 }
 
 const MenuItemSchema = new Schema(
@@ -43,7 +43,10 @@ const MenuItemSchema = new Schema(
     tags: [String],
     cookTime: Number,
     available: { type: Boolean, required: true },
-    restaurantId: { type: Types.ObjectId, ref: appConstants.models.restaurant },
+    restaurant: {
+      type: Schema.Types.ObjectId,
+      ref: appConstants.models.restaurant,
+    },
   },
   {
     timestamps: true,

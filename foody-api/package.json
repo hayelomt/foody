@@ -8,7 +8,7 @@
     "express",
     "mongo"
   ],
-  "description": "Food open source app api.",
+  "description": "Foody open source app api.",
   "author": "Hayelom Tizazu <hayelomtizazu@gmail.com>",
   "license": "MIT",
   "bugs": {
@@ -19,6 +19,7 @@
     "build": "tsc --skipLibCheck",
     "start": "tsc --skipLibCheck && node ./build/core/server/index.js",
     "ts:watch": "tsc -w",
+    "seed": "ts-node src/core/db/seeder/seed.ts",
     "test": "DOTENV_CONFIG_PATH=.env.test NODE_ENV=test mocha  --require ts-node/register --require dotenv/config --file test/testSetup.ts    --extension ts --reporter test/minReporter.js --spec 'test/**/*.spec.ts' --bail --watch"
   },
   "files": [

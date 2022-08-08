@@ -10,7 +10,7 @@ const RestaurantService = {
   isManager: async (restaurantId: string, userId: Types.ObjectId) => {
     const restaurant = await RestaurantService.findOne(restaurantId);
 
-    return restaurant.managerId.toString() === userId.toString();
+    return restaurant.manager.toString() === userId.toString();
   },
 
   createRestaurant: async (data: any, userId: string): Promise<IRestaurant> => {

@@ -1,5 +1,6 @@
 import { Document, Schema, Types } from 'mongoose';
 import { db } from '../../core/db/connection';
+import appConstants from '../../core/utils/appconstants';
 
 export interface IRestaurant extends Document {
   name: string;
@@ -11,7 +12,7 @@ export interface IRestaurant extends Document {
     size: number;
     path: string;
   };
-  managerId: string;
+  manager: string;
   deliveryRate: number;
 }
 
@@ -30,7 +31,10 @@ const RestaurantSchema = new Schema(
       size: Number,
       path: String,
     },
-    managerId: { type: Types.ObjectId, ref: 'manager' },
+    manager: {
+      type: Schema.Types.ObjectId,
+      ref: appConstants.models.manager,
+    },
     deliveryRate: { type: Number, required: true },
   },
   {
@@ -38,6 +42,9 @@ const RestaurantSchema = new Schema(
   },
 );
 
-const Restaurant = db.model<IRestaurant>('restaurant', RestaurantSchema);
+const Restaurant = db.model<IRestaurant>(
+  appConstants.models.restaurant,
+  RestaurantSchema,
+);
 
 export default Restaurant;

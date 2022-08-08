@@ -1,5 +1,6 @@
 import Driver, { IDriver } from '../../../features/driver/driver';
 import Manager, { IManager } from '../../../features/manager/manager';
+import ManagerToken from '../../../features/manager/managertoken/managertoken';
 import MenuItem, {
   IMenuItem,
   MenuItemType,
@@ -8,12 +9,16 @@ import Restaurant, {
   IRestaurant,
 } from '../../../features/restaurant/restaurant';
 import User from '../../../features/user/user';
+import UserToken from '../../../features/user/usertoken/usertoken';
 
 const clearDb = async () => {
+  console.log('Clearing db');
   await Driver.deleteMany();
   await MenuItem.deleteMany();
   await Restaurant.deleteMany();
+  await ManagerToken.deleteMany();
   await Manager.deleteMany();
+  await UserToken.deleteMany();
   await User.deleteMany();
 };
 
@@ -160,15 +165,17 @@ const fakeData: FakeDataProps = {
 const seed = async () => {
   console.log('Start seeding 🚀');
 
+  await clearDb();
+
   const manager = await Manager.create(fakeData.manager);
   const restaurant = await Restaurant.create({
     ...fakeData.restaurant,
-    managerId: manager._id,
+    manager: manager._id,
   });
 
   console.log('seeding drivers');
   for (const driver of fakeData.drivers) {
-    await Driver.create({ ...driver, restaurantId: restaurant.id });
+    await Driver.create({ ...driver, restaurant: restaurant.id });
   }
 
   console.log('Seeding menu items');
@@ -179,7 +186,7 @@ const seed = async () => {
       promises.push(
         MenuItem.create({
           ...menuItem,
-          restaurantId: restaurant._id,
+          restaurant: restaurant._id,
           name: `${i + 1} ${menuItem.name}`,
         }),
       );
