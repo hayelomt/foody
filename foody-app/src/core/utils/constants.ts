@@ -11,6 +11,7 @@ const appConstants = {
     },
     paymentSuccess: 'PaymentSuccessScreen',
   },
+  api: 'http://10.0.2.2:9989',
 };
 
 export default appConstants;

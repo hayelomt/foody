@@ -11,9 +11,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from '../../../core/lib/tailwind';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { ClassInput } from 'twrnc/dist/esm/types';
-import MapView, { Marker } from 'react-native-maps';
+// import MapView, { Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 import appConstants from '../../../core/utils/constants';
+import { MenuItem } from '../../restaurant/restaurant';
+import ImageUtils from '../../../core/utils/image-utils';
+import useHomeController from '../hooks/useHomeController';
 
 type Food = {
   id: string;
@@ -23,70 +26,7 @@ type Food = {
 
 const HomeTab = () => {
   const navigation = useNavigation<any>();
-
-  const tags = [
-    'Recommended',
-    'Junk Food',
-    'Vegan',
-    'Bread',
-    'Meat',
-    'Dessert',
-    'Shiro',
-    'Beyayinet',
-    'Pasta',
-  ].map((label, i) => ({ id: `tag-${i}`, label }));
-  const foodItems: Food[] = [
-    {
-      id: 'b-1',
-      label: 'Special Burger',
-      image: require('../../../assets/images/basic-burger.jpg'),
-    },
-    {
-      id: 'b-2',
-      label: 'Taco Delight',
-      image: require('../../../assets/images/tacos.jpg'),
-    },
-    {
-      id: 'b-3',
-      label: 'Double Burger',
-      image: require('../../../assets/images/double.jpg'),
-    },
-    {
-      id: 'b-4',
-      label: 'Burrito',
-      image: require('../../../assets/images/burrito.jpg'),
-    },
-    {
-      id: 'b-5',
-      label: 'Cheese Burger',
-      image: require('../../../assets/images/cheese-burger.jpg'),
-    },
-    {
-      id: 'b-6',
-      label: 'Special Burger',
-      image: require('../../../assets/images/basic-burger.jpg'),
-    },
-    {
-      id: 'b-7',
-      label: 'Taco Delight',
-      image: require('../../../assets/images/tacos.jpg'),
-    },
-    {
-      id: 'b-8',
-      label: 'Double Burger',
-      image: require('../../../assets/images/double.jpg'),
-    },
-    {
-      id: 'b-9',
-      label: 'Burrito',
-      image: require('../../../assets/images/burrito.jpg'),
-    },
-    {
-      id: 'b-10',
-      label: 'Cheese Burger',
-      image: require('../../../assets/images/cheese-burger.jpg'),
-    },
-  ];
+  const { data, tags } = useHomeController();
 
   const Header = () => (
     <View style={tw`flex flex-row justify-between px-global items-center`}>
@@ -132,11 +72,11 @@ const HomeTab = () => {
     </View>
   );
 
-  const FoodCard = ({
-    food,
+  const MenuItemCard = ({
+    menuItem,
     style = [],
   }: {
-    food: Food;
+    menuItem: MenuItem;
     style?: ClassInput[];
   }) => (
     <TouchableOpacity
@@ -147,7 +87,7 @@ const HomeTab = () => {
       <ImageBackground
         style={tw.style('h-65 w-50 shadow-md p-3.5', ...style)}
         imageStyle={tw`rounded-2`}
-        source={food.image}
+        source={{ uri: ImageUtils.getUrl(menuItem.image.path) }}
       >
         <View
           style={tw.style(
@@ -158,14 +98,16 @@ const HomeTab = () => {
             }
           )}
         >
-          <View style={tw`bg-grey bg-opacity-60 px-2 py-0.8 rounded-4`}>
-            <Text style={tw` text-white sub1 font-medium`}>🍔 Junk Food</Text>
+          <View style={tw`bg-gray-500 bg-opacity-80 px-4 py-0.8 rounded-4`}>
+            <Text style={tw` text-white sub1 font-medium`}>
+              {menuItem.category}
+            </Text>
           </View>
 
           <View style={tw`flex flex-row justify-between items-end w-full`}>
             <View style={tw`flex flex-col flex-shrink-1`}>
               <Text style={tw`text-white text-5 mb-1 font-bold pr-2`}>
-                {food.label}
+                {menuItem.name}
               </Text>
               <Text style={tw`sub1 text-white`}>30 Min | 1Serving</Text>
             </View>
@@ -234,10 +176,10 @@ const HomeTab = () => {
           <FlatList
             horizontal
             showsHorizontalScrollIndicator={false}
-            data={foodItems}
-            keyExtractor={(i) => i.id}
+            data={data}
+            keyExtractor={(i) => i._id}
             renderItem={({ item, index }) => (
-              <FoodCard food={item} style={[{ 'ml-5': index === 0 }]} />
+              <MenuItemCard menuItem={item} style={[{ 'ml-5': index === 0 }]} />
             )}
           />
         </View>
