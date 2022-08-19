@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   View,
   Text,
@@ -15,6 +15,9 @@ import { RootStackParamList } from '../../core/utils/constants';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import ImageUtils from '../../core/utils/image-utils';
 import MoneyUtils from '../../core/utils/money-utils';
+import Cart from '../../core/ut/components/Cart';
+import { OrderContext } from '../../core/state/OrderContext';
+import useFoodDetailHook from './hooks/useFoodDetailHook';
 
 export type FoodDetailProps = NativeStackScreenProps<
   RootStackParamList,
@@ -23,6 +26,8 @@ export type FoodDetailProps = NativeStackScreenProps<
 
 const FoodDetailScreen = ({ navigation, route }: FoodDetailProps) => {
   const { menuItem } = route.params;
+  const { currentItems, addItem, removeItem, getOrderCount } =
+    useFoodDetailHook();
 
   return (
     <View style={tw.style('flex-1 flex-col justify-between bg-white')}>
@@ -46,9 +51,11 @@ const FoodDetailScreen = ({ navigation, route }: FoodDetailProps) => {
                   <Feather name="chevron-left" size={16} color="white" />
                 </View>
               </TouchableOpacity>
-              <View style={tw`h-8 w-8 rounded-2 bg-grey center shadow-sm`}>
-                <Ionicons name="cart-outline" size={16} color="white" />
-              </View>
+              <Cart
+                cartColor="white"
+                containerColor="bg-grey"
+                orderCount={getOrderCount()}
+              />
             </View>
           </SafeAreaView>
         </View>
@@ -68,6 +75,8 @@ const FoodDetailScreen = ({ navigation, route }: FoodDetailProps) => {
                 style={tw`bg-lightgrey py-1.1 px-2 rounded-2 flex flex-row items-center`}
               >
                 <TouchableOpacity
+                  disabled={currentItems <= 0}
+                  onPress={removeItem}
                   style={tw`bg-white rounded-full w-5 h-5 flex-shrink-0 center`}
                 >
                   <Feather name="minus" size={14} />
@@ -76,6 +85,7 @@ const FoodDetailScreen = ({ navigation, route }: FoodDetailProps) => {
                   <Text>1</Text>
                 </View>
                 <TouchableOpacity
+                  onPress={addItem}
                   style={tw`bg-white rounded-full w-5 h-5 flex-shrink-0 center`}
                 >
                   <Feather name="plus" size={14} />

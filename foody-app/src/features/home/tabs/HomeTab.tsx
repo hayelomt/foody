@@ -20,6 +20,10 @@ import { MenuItem } from '../../restaurant/restaurant';
 import ImageUtils from '../../../core/utils/image-utils';
 import useHomeController from '../hooks/useHomeController';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useContext } from 'react';
+import { OrderContext } from '../../../core/state/OrderContext';
+import TextUtils from '../../../core/utils/text-utils';
+import Cart from '../../../core/ut/components/Cart';
 
 type Food = {
   id: string;
@@ -31,6 +35,7 @@ type HomeProps = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
 
 const HomeTab = ({ navigation }: HomeProps) => {
   const { data, tags } = useHomeController();
+  const { getOrderCount } = useContext(OrderContext);
 
   const Header = () => (
     <View style={tw`flex flex-row justify-between px-global items-center`}>
@@ -44,9 +49,7 @@ const HomeTab = ({ navigation }: HomeProps) => {
           <Text style={tw`body1 font-semibold`}>Addisu Gebeya, ETH</Text>
         </View>
       </View>
-      <View style={tw`h-8 w-8 rounded-2 bg-white center shadow-sm`}>
-        <Ionicons name="ios-cart-outline" size={22} />
-      </View>
+      <Cart orderCount={getOrderCount()} containerColor="bg-white" />
     </View>
   );
 
@@ -147,7 +150,7 @@ const HomeTab = ({ navigation }: HomeProps) => {
               style={tw`w-full rounded-1.5 bg-white py-2 px-4 flex justify-between`}
             >
               <View style={tw`flex flex-col`}>
-                <Text style={tw`body2 font-bold mb-1`}>Hei, Granger!</Text>
+                <Text style={tw`body2 font-bold mb-1`}>Hi, Granger!</Text>
                 <Text style={tw`text-text-gray body1`}>
                   You've 23 discount ticket
                 </Text>

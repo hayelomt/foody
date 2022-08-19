@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useReducer } from 'react';
 import { MenuItem } from '../../features/restaurant/restaurant';
+import { logIt } from '../utils/logger';
 
 type OrderItem = {
   menuItem: MenuItem;
@@ -67,8 +68,9 @@ type OrderContextType = {
 
   addOrder: (state: OrderState, item: MenuItem, addOrder: number) => void;
   removeOrder: (item: MenuItem) => void;
-  getOrderLength: () => number;
+  getOrderCount: () => number;
   getOrderTotal: () => string;
+  placeOrder: (state: OrderState) => Promise<boolean>;
 };
 
 export const OrderContext = createContext<OrderContextType>({
@@ -78,8 +80,9 @@ export const OrderContext = createContext<OrderContextType>({
   },
   addOrder: (_state, _item, _) => {},
   removeOrder: (_) => {},
-  getOrderLength: () => 0,
+  getOrderCount: () => 0,
   getOrderTotal: () => '0',
+  placeOrder: async (_) => false,
 });
 
 export const OrderProvider = ({ children }: { children: ReactNode }) => {
@@ -98,7 +101,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
     dispatch({ type: 'remove_menu_item', payload: { id: menuItem._id } });
   };
 
-  const getOrderLength = () => Object.values(state.orderItems).length;
+  const getOrderCount = () => Object.values(state.orderItems).length;
 
   const getOrderTotal = () => {
     let total = 0;
@@ -109,9 +112,22 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
     return (total / 100).toFixed(2);
   };
 
+  const placeOrder = async (state: OrderState) => {
+    logIt('Orders', state);
+
+    return false;
+  };
+
   return (
     <OrderContext.Provider
-      value={{ state, addOrder, removeOrder, getOrderLength, getOrderTotal }}
+      value={{
+        state,
+        addOrder,
+        removeOrder,
+        getOrderCount,
+        getOrderTotal,
+        placeOrder,
+      }}
     >
       {children}
     </OrderContext.Provider>
