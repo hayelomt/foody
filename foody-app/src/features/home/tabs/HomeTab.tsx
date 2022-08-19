@@ -49,7 +49,11 @@ const HomeTab = ({ navigation }: HomeProps) => {
           <Text style={tw`body1 font-semibold`}>Addisu Gebeya, ETH</Text>
         </View>
       </View>
-      <Cart orderCount={getOrderCount()} containerColor="bg-white" />
+      <Cart
+        orderCount={getOrderCount()}
+        containerColor="bg-white"
+        onPress={() => navigation.navigate('CartScreen')}
+      />
     </View>
   );
 

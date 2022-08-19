@@ -18,6 +18,7 @@ import MoneyUtils from '../../core/utils/money-utils';
 import Cart from '../../core/ut/components/Cart';
 import { OrderContext } from '../../core/state/OrderContext';
 import useFoodDetailHook from './hooks/useFoodDetailHook';
+import { Snackbar } from 'react-native-paper';
 
 export type FoodDetailProps = NativeStackScreenProps<
   RootStackParamList,
@@ -26,8 +27,15 @@ export type FoodDetailProps = NativeStackScreenProps<
 
 const FoodDetailScreen = ({ navigation, route }: FoodDetailProps) => {
   const { menuItem } = route.params;
-  const { currentItems, addItem, removeItem, getOrderCount } =
-    useFoodDetailHook();
+  const {
+    showMsg,
+    currentItems,
+    addItem,
+    removeItem,
+    getOrderCount,
+    hideSnackbar,
+    placeOrder,
+  } = useFoodDetailHook(menuItem);
 
   return (
     <View style={tw.style('flex-1 flex-col justify-between bg-white')}>
@@ -55,6 +63,7 @@ const FoodDetailScreen = ({ navigation, route }: FoodDetailProps) => {
                 cartColor="white"
                 containerColor="bg-grey"
                 orderCount={getOrderCount()}
+                onPress={() => navigation.navigate('CartScreen')}
               />
             </View>
           </SafeAreaView>
@@ -82,7 +91,7 @@ const FoodDetailScreen = ({ navigation, route }: FoodDetailProps) => {
                   <Feather name="minus" size={14} />
                 </TouchableOpacity>
                 <View style={tw`px-4 center`}>
-                  <Text>1</Text>
+                  <Text>{currentItems}</Text>
                 </View>
                 <TouchableOpacity
                   onPress={addItem}
@@ -133,19 +142,24 @@ const FoodDetailScreen = ({ navigation, route }: FoodDetailProps) => {
           <View style={tw`flex flex-col`}>
             <Text style={tw`body2 text-grey`}>Price</Text>
             <Text style={tw`body-big font-medium text-brand`}>
-              {MoneyUtils.formatMoney(menuItem.price)}
+              {MoneyUtils.formatMoney(menuItem.price * currentItems)}
             </Text>
           </View>
           <TouchableOpacity
             style={tw`bg-accent w-[60%] center rounded-2`}
             activeOpacity={0.7}
-            onPress={() => navigation.navigate('CartScreen')}
+            onPress={placeOrder}
+            disabled={currentItems === 0}
           >
             <Text style={tw` text-white body2 font-bold tracking-wide`}>
               + Add to cart
             </Text>
           </TouchableOpacity>
         </View>
+
+        <Snackbar visible={showMsg} duration={2500} onDismiss={hideSnackbar}>
+          Item added to order
+        </Snackbar>
       </SafeAreaView>
     </View>
   );

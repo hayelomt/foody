@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import tw from '../../lib/tailwind';
@@ -8,15 +8,18 @@ type CartProps = {
   cartColor?: string;
   containerColor?: string;
   orderCount: number;
+  onPress: () => void;
 };
 
 const Cart = ({
   cartColor = 'black',
   containerColor = 'bg-white',
   orderCount,
+  onPress,
 }: CartProps) => {
   return (
-    <View
+    <TouchableOpacity
+      onPress={onPress}
       style={tw`h-8 w-8 rounded-2 ${containerColor} center shadow-sm relative`}
     >
       {orderCount > 0 ? (
@@ -31,7 +34,7 @@ const Cart = ({
         <></>
       )}
       <Ionicons name="ios-cart-outline" color={cartColor} size={22} />
-    </View>
+    </TouchableOpacity>
   );
 };
 

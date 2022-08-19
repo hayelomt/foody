@@ -2,7 +2,7 @@ import { createContext, ReactNode, useReducer } from 'react';
 import { MenuItem } from '../../features/restaurant/restaurant';
 import { logIt } from '../utils/logger';
 
-type OrderItem = {
+export type OrderItem = {
   menuItem: MenuItem;
   amount: number;
 };
@@ -35,13 +35,17 @@ const orderReducer = (state: OrderState, action: ReducerAction): OrderState => {
         },
       };
     case 'change_amount':
+      const amount = Math.max(
+        0,
+        action.payload.amount + state.orderItems[action.payload.id].amount
+      );
       return {
         ...state,
         orderItems: {
           ...orderItems,
           [action.payload.id]: {
             ...orderItems[action.payload.id],
-            amount: Math.max(0, action.payload.amount),
+            amount,
           },
         },
       };
@@ -67,9 +71,10 @@ type OrderContextType = {
   state: OrderState;
 
   addOrder: (state: OrderState, item: MenuItem, addOrder: number) => void;
+  decrementOrder: (item: MenuItem, addOrder: number) => void;
   removeOrder: (item: MenuItem) => void;
   getOrderCount: () => number;
-  getOrderTotal: () => string;
+  getOrderTotal: () => number;
   placeOrder: (state: OrderState) => Promise<boolean>;
 };
 
@@ -79,9 +84,10 @@ export const OrderContext = createContext<OrderContextType>({
     submitting: false,
   },
   addOrder: (_state, _item, _) => {},
+  decrementOrder: (_item, _) => {},
   removeOrder: (_) => {},
   getOrderCount: () => 0,
-  getOrderTotal: () => '0',
+  getOrderTotal: () => 0,
   placeOrder: async (_) => false,
 });
 
@@ -89,12 +95,20 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(orderReducer, initOrderState);
 
   const addOrder = (state: OrderState, menuItem: MenuItem, amount: number) => {
+    // console.log('add', state.orderItems[menuItem._id]);
     if (state.orderItems[menuItem._id] === undefined) {
       dispatch({ type: 'add_menu_item', payload: { menuItem, amount } });
       return;
     }
 
     dispatch({ type: 'change_amount', payload: { id: menuItem._id, amount } });
+  };
+
+  const decrementOrder = (menuItem: MenuItem, amount: number) => {
+    dispatch({
+      type: 'change_amount',
+      payload: { id: menuItem._id, amount: -1 * amount },
+    });
   };
 
   const removeOrder = (menuItem: MenuItem) => {
@@ -109,7 +123,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
       total += item.menuItem.price * item.amount;
     });
 
-    return (total / 100).toFixed(2);
+    return total;
   };
 
   const placeOrder = async (state: OrderState) => {
@@ -123,6 +137,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
       value={{
         state,
         addOrder,
+        decrementOrder,
         removeOrder,
         getOrderCount,
         getOrderTotal,
