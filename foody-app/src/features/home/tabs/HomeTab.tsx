@@ -13,10 +13,13 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { ClassInput } from 'twrnc/dist/esm/types';
 // import MapView, { Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
-import appConstants from '../../../core/utils/constants';
+import appConstants, {
+  RootStackParamList,
+} from '../../../core/utils/constants';
 import { MenuItem } from '../../restaurant/restaurant';
 import ImageUtils from '../../../core/utils/image-utils';
 import useHomeController from '../hooks/useHomeController';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 type Food = {
   id: string;
@@ -24,8 +27,9 @@ type Food = {
   image: number;
 };
 
-const HomeTab = () => {
-  const navigation = useNavigation<any>();
+type HomeProps = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
+
+const HomeTab = ({ navigation }: HomeProps) => {
   const { data, tags } = useHomeController();
 
   const Header = () => (
@@ -81,7 +85,7 @@ const HomeTab = () => {
   }) => (
     <TouchableOpacity
       activeOpacity={0.7}
-      onPress={() => navigation.navigate(appConstants.screens.foodDetail)}
+      onPress={() => navigation.navigate('FoodDetailScreen', { menuItem })}
       style={tw` mr-4`}
     >
       <ImageBackground

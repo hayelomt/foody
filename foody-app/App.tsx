@@ -1,9 +1,9 @@
 import { useDeviceContext } from 'twrnc';
-import AppRoutes from './src/app/routes';
+import StateWrapper from './src/app/StateWrapper';
 import tw from './src/core/lib/tailwind';
 
 export default function App() {
   useDeviceContext(tw, { withDeviceColorScheme: false });
 
-  return <AppRoutes />;
+  return <StateWrapper />;
 }

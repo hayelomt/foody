@@ -1,0 +1,119 @@
+import { createContext, ReactNode, useReducer } from 'react';
+import { MenuItem } from '../../features/restaurant/restaurant';
+
+type OrderItem = {
+  menuItem: MenuItem;
+  amount: number;
+};
+
+type OrderState = {
+  orderItems: Record<string, OrderItem>;
+  submitting: boolean;
+};
+
+type ReducerAction =
+  | {
+      type: 'add_menu_item';
+      payload: { menuItem: MenuItem; amount: number };
+    }
+  | { type: 'remove_menu_item'; payload: { id: string } }
+  | { type: 'change_amount'; payload: { id: string; amount: number } };
+
+const orderReducer = (state: OrderState, action: ReducerAction): OrderState => {
+  const { orderItems } = state;
+  switch (action.type) {
+    case 'add_menu_item':
+      return {
+        ...state,
+        orderItems: {
+          ...orderItems,
+          [action.payload.menuItem._id]: {
+            menuItem: action.payload.menuItem,
+            amount: action.payload.amount,
+          },
+        },
+      };
+    case 'change_amount':
+      return {
+        ...state,
+        orderItems: {
+          ...orderItems,
+          [action.payload.id]: {
+            ...orderItems[action.payload.id],
+            amount: Math.max(0, action.payload.amount),
+          },
+        },
+      };
+    case 'remove_menu_item':
+      const curItems = { ...orderItems };
+      delete curItems[action.payload.id];
+
+      return {
+        ...state,
+        orderItems: curItems,
+      };
+    default:
+      return state;
+  }
+};
+
+const initOrderState: OrderState = {
+  orderItems: {},
+  submitting: false,
+};
+
+type OrderContextType = {
+  state: OrderState;
+
+  addOrder: (state: OrderState, item: MenuItem, addOrder: number) => void;
+  removeOrder: (item: MenuItem) => void;
+  getOrderLength: () => number;
+  getOrderTotal: () => string;
+};
+
+export const OrderContext = createContext<OrderContextType>({
+  state: {
+    orderItems: {},
+    submitting: false,
+  },
+  addOrder: (_state, _item, _) => {},
+  removeOrder: (_) => {},
+  getOrderLength: () => 0,
+  getOrderTotal: () => '0',
+});
+
+export const OrderProvider = ({ children }: { children: ReactNode }) => {
+  const [state, dispatch] = useReducer(orderReducer, initOrderState);
+
+  const addOrder = (state: OrderState, menuItem: MenuItem, amount: number) => {
+    if (state.orderItems[menuItem._id] === undefined) {
+      dispatch({ type: 'add_menu_item', payload: { menuItem, amount } });
+      return;
+    }
+
+    dispatch({ type: 'change_amount', payload: { id: menuItem._id, amount } });
+  };
+
+  const removeOrder = (menuItem: MenuItem) => {
+    dispatch({ type: 'remove_menu_item', payload: { id: menuItem._id } });
+  };
+
+  const getOrderLength = () => Object.values(state.orderItems).length;
+
+  const getOrderTotal = () => {
+    let total = 0;
+    Object.values(state.orderItems).forEach((item) => {
+      total += item.menuItem.price * item.amount;
+    });
+
+    return (total / 100).toFixed(2);
+  };
+
+  return (
+    <OrderContext.Provider
+      value={{ state, addOrder, removeOrder, getOrderLength, getOrderTotal }}
+    >
+      {children}
+    </OrderContext.Provider>
+  );
+};

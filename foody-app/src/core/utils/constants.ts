@@ -1,3 +1,12 @@
+import { MenuItem } from '../../features/restaurant/restaurant';
+
+export type RootStackParamList = {
+  HomeScreen: undefined;
+  CartScreen: undefined;
+  FoodDetailScreen: { menuItem: MenuItem };
+  PaymentSuccessScreen: undefined;
+};
+
 const appConstants = {
   screens: {
     cart: 'CartScreen',

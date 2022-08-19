@@ -11,58 +11,25 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';
 import tw from '../../core/lib/tailwind';
-import { useNavigation } from '@react-navigation/native';
-import appConstants from '../../core/utils/constants';
+import { RootStackParamList } from '../../core/utils/constants';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import ImageUtils from '../../core/utils/image-utils';
+import MoneyUtils from '../../core/utils/money-utils';
 
-export type FoodDetailProps = {
-  foodItem?: string;
-};
+export type FoodDetailProps = NativeStackScreenProps<
+  RootStackParamList,
+  'FoodDetailScreen'
+>;
 
-const FoodDetailScreen = () => {
-  const navigation = useNavigation<any>();
-
-  const foodItem = {
-    id: 'b-1',
-    label: 'Special Burger',
-    image: require('../../assets/images/basic-burger.jpg'),
-  };
-
-  const ingredients = [
-    {
-      id: '1',
-      icon: '🍖',
-      title: 'Onion',
-    },
-    {
-      id: '2',
-      icon: '🧅',
-      title: 'Onion',
-    },
-    {
-      id: '3',
-      icon: '🥬',
-      title: 'Lettuce',
-    },
-    {
-      id: '4',
-      icon: '🥕',
-      title: 'Carrot',
-    },
-    {
-      id: '5',
-      icon: '🧂',
-      title: 'Salt',
-    },
-    {
-      id: '6',
-      icon: '🌶',
-      title: 'Pepper',
-    },
-  ];
+const FoodDetailScreen = ({ navigation, route }: FoodDetailProps) => {
+  const { menuItem } = route.params;
 
   return (
     <View style={tw.style('flex-1 flex-col justify-between bg-white')}>
-      <ImageBackground source={foodItem.image} resizeMode="cover">
+      <ImageBackground
+        source={{ uri: ImageUtils.getUrl(menuItem.image.path) }}
+        resizeMode="cover"
+      >
         <View
           style={tw.style('', {
             height: Dimensions.get('window').height * 0.4,
@@ -90,9 +57,7 @@ const FoodDetailScreen = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={tw`flex-1 pt-6`}>
           <View style={tw`px-global `}>
-            <Text style={tw`label font-bold text-accent`}>
-              Wagyu A5 Rare hot
-            </Text>
+            <Text style={tw`label font-bold text-accent`}>{menuItem.name}</Text>
             <View style={tw`flex flex-row justify-between items-end`}>
               <View style={tw`flex flex-row items-center`}>
                 <Ionicons name="star" color="#EFCA30" size={16} />
@@ -133,17 +98,17 @@ const FoodDetailScreen = () => {
           </View>
 
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {ingredients.map((item, i) => (
+            {menuItem.ingredients.map((item, i) => (
               <View
                 style={tw.style(
                   'h-23 w-23 bg-lightgrey center p-1 rounded-2 mr-3',
                   [i === 0 ? 'ml-6' : '']
                 )}
-                key={item.id}
+                key={item._id}
               >
-                <Text style={tw`text-7 mb-1`}>{item.icon}</Text>
+                <Text style={tw`text-7 mb-1`}>{`🍔`}</Text>
                 <Text style={tw`body1 font-medium text-text-primary`}>
-                  {item.title}
+                  {item.name}
                 </Text>
               </View>
             ))}
@@ -157,12 +122,14 @@ const FoodDetailScreen = () => {
         <View style={tw`flex flex-row px-global py-2 bg-white justify-between`}>
           <View style={tw`flex flex-col`}>
             <Text style={tw`body2 text-grey`}>Price</Text>
-            <Text style={tw`body-big font-medium text-brand`}>$15.00</Text>
+            <Text style={tw`body-big font-medium text-brand`}>
+              {MoneyUtils.formatMoney(menuItem.price)}
+            </Text>
           </View>
           <TouchableOpacity
             style={tw`bg-accent w-[60%] center rounded-2`}
             activeOpacity={0.7}
-            onPress={() => navigation.navigate(appConstants.screens.cart)}
+            onPress={() => navigation.navigate('CartScreen')}
           >
             <Text style={tw` text-white body2 font-bold tracking-wide`}>
               + Add to cart
